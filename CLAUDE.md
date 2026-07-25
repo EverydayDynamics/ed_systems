@@ -128,19 +128,38 @@ stories. The register lives in `system-model/Stakeholders.md`: a
 scheme). This keeps them first-class and analyzable.
 
 A **need is a capability** — reqvire's "As a &lt;stakeholder&gt;, I want
-&lt;need&gt;, so that &lt;benefit&gt;" user story *is* the need. Tie a capability
-to the stakeholder(s) it serves with a `#### Concept References` block pointing
-at the stakeholder concept:
+&lt;need&gt;, so that &lt;benefit&gt;" user story *is* the need.
+
+**Required convention — whenever a capability/need names a stakeholder, do BOTH:**
+
+1. Write the stakeholder **inline in the user story as a Markdown link** to its
+   concept (for human readability), and
+2. Declare it in a **`#### Concept References` block** (this is the part reqvire
+   actually parses — it creates the traceable, validated reference).
 
 ```markdown
+### Audience-Responsive Kinetics
+
+As a [Gallery Visitor](Stakeholders.md#gallery-visitor), I want the sculpture to
+respond to my presence, so that the piece feels alive.
+
+#### Metadata
+  * type: capability
+
 #### Concept References
   * [Gallery Visitor](Stakeholders.md#gallery-visitor)
 ```
 
+Both point at the same concept. The block is the source of truth: reqvire does
+**not** validate body links, so an inline link alone would rot silently on a
+rename — the matching block is what keeps it honest (`rename`/`mv` and `validate`
+update and check the block, never the prose). Never write the inline link
+without the block.
+
 Rules:
-- Put the reference on the **stakeholder-facing** capability (the top of a
-  `derive` chain). Child capabilities inherit the stakeholder via `derivedFrom`
-  and don't need their own reference.
+- Apply this to the **stakeholder-facing** capability (the top of a `derive`
+  chain). Child capabilities inherit the stakeholder via `derivedFrom` and don't
+  need their own inline link or reference.
 - `concept` elements take SKOS relations only (`derivedFrom` to the scheme;
   `broader`/`narrower`/`related` between concepts). Never `specify`/`verify`
   them, and never give them `status`/`priority` governance metadata.

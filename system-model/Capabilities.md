@@ -7,9 +7,9 @@ relation pointing here).
 
 ### Audience-Responsive Kinetics
 
-As a **gallery visitor**, I want the sculpture to sense and respond to my
-presence and movement, so that the piece feels alive and creates a sense of
-dialogue between me and the machine.
+As a [Gallery Visitor](Stakeholders.md#gallery-visitor), I want the sculpture to
+sense and respond to my presence and movement, so that the piece feels alive and
+creates a sense of dialogue between me and the machine.
 
 #### Details
 This is the flagship capability of the EverydayDynamics pieces: the work is not
@@ -63,9 +63,9 @@ that motion and light can be directed toward them.
 
 ### Safe Public Operation
 
-As a **gallery operator**, I want the piece to operate safely around
-unsupervised members of the public, so that it can run unattended for the
-duration of an exhibition.
+As a [Gallery Operator](Stakeholders.md#gallery-operator), I want the piece to
+operate safely around unsupervised members of the public, so that it can run
+unattended for the duration of an exhibition.
 
 #### Metadata
   * type: capability
