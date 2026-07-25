@@ -120,6 +120,38 @@ Declared from one side; reqvire infers the inverse. Canonical direction to autho
 - `satisfiedBy` — element → implementation/evidence (code, doc, test script).
 - `refine`, `trace`, `containedBy` — available for finer structure when needed.
 
+## Stakeholders
+
+Stakeholders are modeled as a **concept-scheme**, not plaintext inside user
+stories. The register lives in `system-model/Stakeholders.md`: a
+`concept-scheme` root with one `concept` per role (each `derivedFrom` the
+scheme). This keeps them first-class and analyzable.
+
+A **need is a capability** — reqvire's "As a &lt;stakeholder&gt;, I want
+&lt;need&gt;, so that &lt;benefit&gt;" user story *is* the need. Tie a capability
+to the stakeholder(s) it serves with a `#### Concept References` block pointing
+at the stakeholder concept:
+
+```markdown
+#### Concept References
+  * [Gallery Visitor](Stakeholders.md#gallery-visitor)
+```
+
+Rules:
+- Put the reference on the **stakeholder-facing** capability (the top of a
+  `derive` chain). Child capabilities inherit the stakeholder via `derivedFrom`
+  and don't need their own reference.
+- `concept` elements take SKOS relations only (`derivedFrom` to the scheme;
+  `broader`/`narrower`/`related` between concepts). Never `specify`/`verify`
+  them, and never give them `status`/`priority` governance metadata.
+- To add a stakeholder: add a `concept` to `Stakeholders.md`; to capture a need:
+  add/annotate a capability and give it a Concept Reference to that stakeholder.
+
+Analysis (today): `reqvire search --filter-type=concept` lists the register;
+`make serve` shows references. Automated completeness checks (orphan
+stakeholders, capabilities missing a stakeholder) are a **future** step — either
+a small analysis script or a SHACL semantic-contract; not wired yet.
+
 ## Adding things (fast path)
 
 ```bash

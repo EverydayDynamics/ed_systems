@@ -26,6 +26,9 @@ organic rather than reactive or mechanical.
 #### Relations
   * derive: [Expressive Motion](#expressive-motion)
   * derive: [Presence Sensing](#presence-sensing)
+
+#### Concept References
+  * [Gallery Visitor](Stakeholders.md#gallery-visitor)
 ---
 
 ### Expressive Motion
@@ -70,4 +73,7 @@ duration of an exhibition.
   * priority: high
   * risk: high
   * status: draft
+
+#### Concept References
+  * [Gallery Operator](Stakeholders.md#gallery-operator)
 ---

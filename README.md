@@ -29,7 +29,8 @@ make check        # validate + lint
 
 ```
 system-model/               # the model — reqvire parses everything here
-  Capabilities.md           #   what the system can do (user-story form)
+  Capabilities.md           #   what the system can do (user-story form) = needs
+  Stakeholders.md           #   stakeholder register (concept-scheme of roles)
   Requirements/             #   testable "shall" statements, EARS form
     SystemRequirements.md
     ExperienceRequirements.md   # artistic intent as measurable constraints
