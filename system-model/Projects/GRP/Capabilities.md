@@ -7,7 +7,7 @@ relation pointing here).
 
 ### Audience-Responsive Kinetics
 
-As a [Gallery Visitor](Stakeholders.md#gallery-visitor), I want the sculpture to
+As a [Gallery Visitor](../../Shared/Stakeholders.md#gallery-visitor), I want the sculpture to
 sense and respond to my presence and movement, so that the piece feels alive and
 creates a sense of dialogue between me and the machine.
 
@@ -15,6 +15,9 @@ creates a sense of dialogue between me and the machine.
 This is the flagship capability of the EverydayDynamics pieces: the work is not
 a fixed object but a responsive presence. Response must feel intentional and
 organic rather than reactive or mechanical.
+
+#### Concept References
+  * [Gallery Visitor](../../Shared/Stakeholders.md#gallery-visitor)
 
 #### Metadata
   * type: capability
@@ -26,9 +29,6 @@ organic rather than reactive or mechanical.
 #### Relations
   * derive: [Expressive Motion](#expressive-motion)
   * derive: [Presence Sensing](#presence-sensing)
-
-#### Concept References
-  * [Gallery Visitor](Stakeholders.md#gallery-visitor)
 ---
 
 ### Expressive Motion
@@ -63,9 +63,12 @@ that motion and light can be directed toward them.
 
 ### Safe Public Operation
 
-As a [Gallery Operator](Stakeholders.md#gallery-operator), I want the piece to
+As a [Gallery Operator](../../Shared/Stakeholders.md#gallery-operator), I want the piece to
 operate safely around unsupervised members of the public, so that it can run
 unattended for the duration of an exhibition.
+
+#### Concept References
+  * [Gallery Operator](../../Shared/Stakeholders.md#gallery-operator)
 
 #### Metadata
   * type: capability
@@ -73,7 +76,4 @@ unattended for the duration of an exhibition.
   * priority: high
   * risk: high
   * status: draft
-
-#### Concept References
-  * [Gallery Operator](Stakeholders.md#gallery-operator)
 ---

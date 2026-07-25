@@ -22,6 +22,37 @@ Reqvire runs via `npx` — no install:
    the anchor is the GitHub slug of the target heading (lowercase, spaces→`-`,
    punctuation dropped). Same-file targets use `#anchor` with no path.
 
+## Portfolio structure
+
+This is **one repo for all of EverydayDynamics** — a system-of-systems, not a
+single project (reqvire can only trace within one workspace, so splitting into
+per-project repos would break the graph). Three tiers under `system-model/`:
+
+- `Enterprise/` — org-level: mission, brand, cross-cutting quality/safety
+  standards. (Create when there's content; not seeded yet.)
+- `Shared/` — assets reused across projects. `Stakeholders.md` lives here;
+  reusable platform capabilities go here too.
+- `Projects/<NAME>/` — one **capability-rooted submodel** per project, each with
+  its own `Capabilities.md`, `Requirements/`, `Verifications/`. The first is
+  `Projects/GRP/`. Non-art artifacts (e.g. a website) are just more projects.
+
+A project's capabilities may `derive` from `Shared/`/`Enterprise/` capabilities,
+and every project references the shared `Stakeholders.md`. Use
+`reqvire submodels` to see each project and its cross-project couplings, and
+`reqvire submodels --from <Project>` / `collect --from` for a per-project view.
+
+**Adding a project:** create `Projects/<NAME>/Capabilities.md` (+ `Requirements/`,
+`Verifications/`), give its capabilities stakeholder references into
+`../../Shared/Stakeholders.md`, and `make check`. Implementation *code* (firmware,
+website source, CAD) stays in its own separate repo; reference it from the model
+by URL/prose or a `source` element (model-to-code `satisfiedBy` only resolves to
+files inside this workspace).
+
+**Moving elements:** prefer `reqvire mv-file`/`mv-folder`/`rename` — but note they
+rewrite `Relations`/`Contract Bindings`, **not** `#### Concept References` blocks
+or inline prose links. After a move that touches a concept-referencing element,
+fix those two by hand and re-run `make check`.
+
 ## Element schema
 
 Model files start with `# Elements`. Each element is an `###` heading followed by
@@ -193,12 +224,16 @@ make check   # then always validate + lint
 ## How the model should grow
 
 Start lean; add structure only when it earns its place:
+- **New projects**: add `system-model/Projects/<NAME>/` (see Portfolio structure).
 - **Subsystems**: as mechanical/electronics/firmware/software detail arrives,
-  split requirements into `system-model/Requirements/<Subsystem>/…` files.
-- **Interfaces (ICDs)**: add `system-model/Interfaces/` with requirement-typed
-  elements describing each subsystem boundary; link with `satisfiedBy`/`verify`.
-- **Risks, BOM, physical architecture**: add as new folders under `system-model/`
-  when you need them — reqvire resolves relations across the whole workspace.
+  split a project's requirements into
+  `system-model/Projects/<NAME>/Requirements/<Subsystem>/…` files.
+- **Interfaces (ICDs)**: add an `Interfaces/` folder inside the project with
+  requirement-typed elements describing each subsystem boundary.
+- **Shared platform**: when two projects need the same capability, lift it into
+  `system-model/Shared/` and have both `derive` from it.
+- **Risks, BOM, physical architecture**: add as new folders when you need them —
+  reqvire resolves relations across the whole workspace.
 - **Decisions**: record architecture/tooling choices as ADRs in `decisions/`.
 
 Keep every change traceable: a new requirement should `specify` a capability and,

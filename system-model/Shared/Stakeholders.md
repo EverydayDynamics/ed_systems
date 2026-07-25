@@ -15,8 +15,6 @@ A "need" in this model is a **capability**: reqvire's user-story layer ("As a
 the stakeholder-need. The stakeholder concept makes the "As a …" part explicit
 and linkable. See `CLAUDE.md` → Stakeholders for the authoring rules.
 
----
-
 ### Stakeholders
 
 Controlled vocabulary of stakeholder roles for the EverydayDynamics pieces.
@@ -25,20 +23,6 @@ Controlled vocabulary of stakeholder roles for the EverydayDynamics pieces.
   * type: concept-scheme
   * concept_base: https://everydaydynamics.art/stakeholders
   * concept_prefix: stk
-
----
-
-### Gallery Visitor
-
-A member of the public experiencing a piece in a gallery or exhibition setting.
-The primary audience the work is made for.
-
-#### Metadata
-  * type: concept
-
-#### Relations
-  * derivedFrom: [Stakeholders](#stakeholders)
-
 ---
 
 ### Gallery Operator
@@ -51,3 +35,16 @@ piece during its show, typically without the artist present.
 
 #### Relations
   * derivedFrom: [Stakeholders](#stakeholders)
+---
+
+### Gallery Visitor
+
+A member of the public experiencing a piece in a gallery or exhibition setting.
+The primary audience the work is made for.
+
+#### Metadata
+  * type: concept
+
+#### Relations
+  * derivedFrom: [Stakeholders](#stakeholders)
+---

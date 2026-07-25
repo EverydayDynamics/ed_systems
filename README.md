@@ -29,23 +29,31 @@ make check        # validate + lint
 
 ```
 system-model/               # the model — reqvire parses everything here
-  Capabilities.md           #   what the system can do (user-story form) = needs
-  Stakeholders.md           #   stakeholder register (concept-scheme of roles)
-  Requirements/             #   testable "shall" statements, EARS form
-    SystemRequirements.md
-    ExperienceRequirements.md   # artistic intent as measurable constraints
-    SafetyRequirements.md
-  Verifications/            #   how requirements are proven satisfied
-    Verifications.md
+  Shared/                   #   reusable across projects
+    Stakeholders.md         #     stakeholder register (concept-scheme of roles)
+  Projects/                 #   one capability-rooted submodel per project
+    GRP/                    #     the first piece
+      Capabilities.md       #       what it does (user stories) = needs
+      Requirements/         #       testable "shall" statements, EARS form
+        SystemRequirements.md
+        ExperienceRequirements.md   # artistic intent as measurable constraints
+        SafetyRequirements.md
+      Verifications/        #       how requirements are proven satisfied
+        Verifications.md
 decisions/                  # ADRs — architecture/tooling decisions (not parsed)
 notes/                      # scratch/working docs (not parsed)
 CLAUDE.md                   # the agent contract: schema, relations, workflow
 ```
 
-The seeded model is a small **worked example** — one flagship piece (an
-audience-responsive kinetic sculpture) modeled end to end from capability →
-requirement → verification — so every relation type is demonstrated and
-`reqvire validate` passes. Replace/extend it with your real pieces.
+This is a **portfolio** repo: one model for all of EverydayDynamics, organized in
+tiers — `Shared/` holds assets reused across projects (the stakeholder register,
+and later platform capabilities), and each project lives as its own
+capability-rooted submodel under `Projects/`. The first is **GRP**, an
+audience-responsive kinetic sculpture modeled end to end from capability →
+requirement → verification (so every relation type is demonstrated and
+`reqvire validate` passes). Add new pieces — or non-art artifacts like a
+website — as sibling folders under `Projects/`. See `decisions/ADR-0002` for why
+it's one repo, and `reqvire submodels` to see the projects and their couplings.
 
 ## The model at a glance
 
