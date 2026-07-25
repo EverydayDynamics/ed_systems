@@ -1,0 +1,7 @@
+# Files excluded from reqvire's structured-markdown processing (gitignore syntax).
+# They can still be referenced as relation targets (e.g. satisfiedBy a doc).
+
+decisions/**
+notes/**
+README.md
+CLAUDE.md
