@@ -1,0 +1,59 @@
+name: Deploy model Explorer to Pages
+
+# Publishes the approved model (main) as a browsable static site — the same
+# Explorer UI as `make serve`, plus the exported RDF (ontologies.ttl).
+#
+# Requires Settings → Pages → Source = "GitHub Actions" on the repo, once.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  REQVIRE_VERSION: "1.2.1"
+
+jobs:
+  deploy:
+    name: Export and deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      # Don't publish a broken model, even from main.
+      - name: Validate model
+        run: npx -y "@reqvire-org/reqvire@${REQVIRE_VERSION}" --workspace "$PWD" validate
+
+      - name: Export Explorer site
+        run: npx -y "@reqvire-org/reqvire@${REQVIRE_VERSION}" --workspace "$PWD" export --output ./site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
