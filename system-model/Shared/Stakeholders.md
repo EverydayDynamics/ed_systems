@@ -25,6 +25,21 @@ Controlled vocabulary of stakeholder roles for the EverydayDynamics pieces.
   * concept_prefix: stk
 ---
 
+### Exhibition Venue
+
+The institution hosting a piece for a show: the gallery, museum, or festival
+organisation itself, as distinct from the individual staff who run it day to
+day. Concerned with contracts, insurance, regulatory compliance, and the
+logistics of getting a piece installed and running in its space — primarily
+within the UK, with EU touring in scope.
+
+#### Metadata
+  * type: concept
+
+#### Relations
+  * derivedFrom: [Stakeholders](#stakeholders)
+---
+
 ### Gallery Operator
 
 Exhibition staff responsible for switching on, monitoring, and safely running a
