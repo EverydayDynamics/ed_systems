@@ -1,0 +1,89 @@
+name: Change impact
+
+# Posts what a PR actually touches downstream in the model graph — the thing a
+# plain file diff can't show. Runs automatically because with npx it costs
+# seconds (reqvire's own repo triggers this by comment only because it has to
+# build from Rust source first).
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  REQVIRE_VERSION: "1.2.1"
+
+jobs:
+  impact:
+    name: Report change impact
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0 # change-impact needs real history
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Compute merge base
+        id: base
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch --no-tags origin "$BASE_REF"
+          BASE_COMMIT=$(git merge-base "origin/${BASE_REF}" HEAD)
+          echo "commit=${BASE_COMMIT}" >> "$GITHUB_OUTPUT"
+          echo "Comparing against ${BASE_REF} at ${BASE_COMMIT}"
+
+      - name: Run change-impact and traces
+        id: report
+        env:
+          BASE_COMMIT: ${{ steps.base.outputs.commit }}
+        run: |
+          REQ="npx -y @reqvire-org/reqvire@${REQVIRE_VERSION} --workspace $PWD"
+          {
+            echo '### Reqvire change impact'
+            echo ''
+            echo "Base: \`${BASE_COMMIT}\`"
+            echo ''
+            echo '<details><summary>Change impact</summary>'
+            echo ''
+            echo '```'
+            $REQ change-impact --git-commit "$BASE_COMMIT" 2>&1 || echo "change-impact failed"
+            echo '```'
+            echo ''
+            echo '</details>'
+            echo ''
+            echo '<details><summary>Verification traces</summary>'
+            echo ''
+            echo '```'
+            $REQ traces 2>&1 || echo "traces failed"
+            echo '```'
+            echo ''
+            echo '</details>'
+          } > report.md
+
+      # Find-then-update keeps one comment per PR instead of a new one per push.
+      - name: Find existing comment
+        uses: peter-evans/find-comment@v3
+        id: existing
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "Reqvire change impact"
+
+      - name: Post or update comment
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.existing.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: report.md
+          edit-mode: replace

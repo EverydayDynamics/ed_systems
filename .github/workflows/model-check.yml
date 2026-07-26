@@ -1,0 +1,63 @@
+name: Model check
+
+# Gates the model on every push to development and every PR.
+# Runs the same `make check` you run locally, with the reqvire version pinned.
+
+on:
+  push:
+    branches: [development]
+  pull_request:
+    branches: [main, development]
+  workflow_dispatch:
+
+env:
+  # Pinned deliberately. Bump this, don't track @latest — an upstream release
+  # must never turn the build red on its own schedule.
+  REQVIRE_VERSION: "1.2.1"
+
+jobs:
+  check:
+    name: Validate, lint, format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      # `make check` = validate + lint. The Makefile uses `REQ ?=`, so this env
+      # var overrides its @latest default and CI runs the identical target.
+      # Note: only `validate` exits non-zero; `lint` is advisory and its output
+      # is surfaced in the log rather than failing the build.
+      - name: Validate and lint model
+        env:
+          REQ: npx -y @reqvire-org/reqvire@${{ env.REQVIRE_VERSION }} --workspace ${{ github.workspace }}
+        run: make check
+
+      # `format` in preview mode always exits 0, so it can't gate directly.
+      # Apply it and fail if it changed anything.
+      - name: Check model formatting
+        run: |
+          npx -y "@reqvire-org/reqvire@${REQVIRE_VERSION}" --workspace "$PWD" format --fix
+          if ! git diff --quiet; then
+            echo "::error::Model formatting is not normalized. Run 'make format-fix' and commit the result."
+            git diff --stat
+            exit 1
+          fi
+
+      # Advisory only. The model is deliberately incomplete during early work,
+      # so coverage gaps report to the job summary instead of failing the build.
+      - name: Coverage report (advisory)
+        if: always()
+        run: |
+          {
+            echo '## Verification & implementation coverage'
+            echo ''
+            echo '```'
+            npx -y "@reqvire-org/reqvire@${REQVIRE_VERSION}" --workspace "$PWD" coverage 2>&1 || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
